@@ -13,7 +13,7 @@ const initWebRoutes = (app) => {
   //path , handle
   router.get("/", homeController.handleHello);
   router.get("/user", homeController.handleUser);
-
+  router.post("/users/create", homeController.handleCreate);
   return app.use("/", router);
 };
 
