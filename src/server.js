@@ -22,9 +22,4 @@ initWebRoutes(app);
 
 //run server trên port đã khởi tạo trước đấy
 //nạp các thông tin khai báo ở trên rồi chạy (ví dụ như nạp routes)
-app.listen(PORT, () => {
-  console.log(
-    ">>Callback function này sẽ được chạy sau khi app chúng ta chạy thành công . port = " +
-      PORT
-  );
-});
+app.listen(PORT);

@@ -1,44 +1,26 @@
-// Get the client
-import mysql from "mysql2";
-
-// Create the connection to database
-
-const connection = mysql.createConnection({
-  host: "localhost",
-  port: 3309,
-  user: "root",
-  database: "jwt",
-});
+import userService from "../service/userService";
 
 const handleHello = (req, res) => {
   const name = "Dieu";
   return res.render("home.ejs", { name });
 };
 
-const handleUser = (req, res) => {
+const handleUser = async(req, res) => {
   //modle - get data from database
-  return res.render("user.ejs"); //trả ra tên file ejs thì Express tự động biết tìm trong /src/view nhờ cấu hình app.set("views", "./src/views"); ở hàm configViewEngine
+   let userList = await userService.getListUser();
+   console.log("Check user List at Controller: ", userList);
+  return res.render("user.ejs", {userList}); //trả ra tên file ejs thì Express tự động biết tìm trong /src/view nhờ cấu hình app.set("views", "./src/views"); ở hàm configViewEngine
 };
+
 
 const handleCreate = (req, res) => {
   let email = req.body.email;
-  let password = req.body.password;
+  let password = req.body.password2;
   let username = req.body.username;
 
-  connection.query(
-    " INSERT INTO users (email, password, username) VALUES (?, ?, ?)",
-    [email, password, username],
-    function (err, results, fields) {
-      if (err) {
-        console.log("loi:", err);
-      }
-      console.log("ket qua:", results);
-      console.log("truong: ", fields);
-    }
-  );
-  return res.send("Page Create");
+  userService.createUser(email, password, username);
 
-  fun;
+  return res.send("Page Create");
 };
 
 module.exports = {

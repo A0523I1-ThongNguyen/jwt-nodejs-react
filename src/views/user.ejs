@@ -14,11 +14,17 @@
   </head>
 
   <body>
-    <h1>This is page User</h1>
-    <form method="post" action="/users/create">
-      <div class="user-container">
-        <div class="container">
-          <div class="row">
+    <!-- tag of ejs -->
+    <!-- <%= JSON.stringify(userList) %> -->
+
+    <div class="container">
+      <div class="row">
+        <div class="user-container">
+          <form method="post" action="/user/create">
+            <div class="pt-3" style="color: brown">
+              <h3>Create a New User</h3>
+            </div>
+
             <div class="mb-3 mt-3 col-6">
               <label for="email" class="form-label">Email address</label>
               <input
@@ -26,7 +32,6 @@
                 type="email"
                 class="form-control"
                 id="email"
-                required
               />
             </div>
 
@@ -39,7 +44,6 @@
                 type="text"
                 class="form-control"
                 id="username"
-                required
               />
             </div>
 
@@ -48,7 +52,7 @@
             <div class="pb-3 col-6">
               <label for="password" class="form-label">Password</label>
               <input
-                name="password"
+                name="password2"
                 type="password"
                 class="form-control"
                 id="password"
@@ -58,9 +62,36 @@
             <div>
               <button type="submit" class="btn btn-primary">Submit</button>
             </div>
-          </div>
+          </form>
+        </div>
+
+        <div class="table-users mt-3">
+          <table class="table table-hover table-bordered">
+            <h3>Table User</h3>
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Email</th>
+                <th scope="col">User Name</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% userList.forEach(function(item,index){ %>
+              <tr>
+                <th scope="row"><%= index + 1 %></th>
+                <td><%= item.email %></td>
+                <td><%= item.username %></td>
+                <td>
+                  <button class="btn btn-warning">Edit</button>
+                  <button class="btn btn-danger">Delete</button>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
         </div>
       </div>
-    </form>
+    </div>
   </body>
 </html>
