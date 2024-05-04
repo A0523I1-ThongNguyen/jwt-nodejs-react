@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 8083;
 //config new engine
 configViewEngine(app);
 
-//config body-parser (data chuyển sang dạng JSON)
+//config body-parser (data chuyển sang dạng JSON ,lấy được param , body,query > Giản lược hóa)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -22,4 +22,9 @@ initWebRoutes(app);
 
 //run server trên port đã khởi tạo trước đấy
 //nạp các thông tin khai báo ở trên rồi chạy (ví dụ như nạp routes)
-app.listen(PORT);
+app.listen(PORT, () => {
+  console.log(
+    ">>Callback function này sẽ được chạy sau khi app chúng ta chạy thành công . port = " +
+      PORT
+  );
+});
