@@ -27,9 +27,33 @@ const handleDelete = async (req, res) => {
   return res.redirect("/user");
 };
 
+const getUpdatePage = async (req, res) => {
+  let id = req.params.id; // gán param trên url cho biến id
+  let user = await userService.getUserById(id); // Kết quả trả về ở file service (rows) là một mảng gán cho mảng user , mà  // hứng kết quả từ truy vấn gán vào biến user
+
+  let userData = {};
+  //check đk .length vì khi trả ra mảng rỗng mà ta dùng user lấy phần tử 0 thì bị lỗi
+  if (user && user.length > 0) {
+    userData = user[0]; // gắn phần tử đầu tiên cho biến object rỗng userData
+  }
+  console.log("check user ", userData);
+  return res.render("update.ejs", { userData });
+};
+
+const handleUpdate = async (req, res) => {
+  let email = req.body.email;
+  let username = req.body.username;
+  let id = req.body.id;
+  console.log("check body", req.body);
+  await userService.updateUserInfo(email, username, id);
+  return res.redirect("/user");
+};
+
 module.exports = {
   handleHello,
   handleUser,
   handleCreate,
   handleDelete,
+  getUpdatePage,
+  handleUpdate,
 };

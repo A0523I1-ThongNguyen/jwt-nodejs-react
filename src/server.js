@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 8083;
 //config new engine
 configViewEngine(app);
 
-//config body-parser (data chuyển sang dạng JSON ,lấy được param , body,query > Giản lược hóa)
+//config thư viện body-parser. Đây là 1 Middleware (data chuyển sang dạng JSON ,lấy được param , body,query > Giản lược hóa)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

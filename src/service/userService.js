@@ -97,8 +97,52 @@ const deleteUser = async (id) => {
   }
 };
 
+const getUserById = async (id) => {
+  const connection = await mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    database: "jwt",
+    port: 3309,
+    Promise: bluebird,
+  });
+
+  try {
+    //rows là một array, view chỉ làm việc với object thuần túy nên ta sẽ lấy phần tử đầu tiên trong array của rows
+    const [rows, fields] = await connection.execute(
+      "select * from users where id = ?",
+      [id]
+    );
+    console.log("check row ", rows);
+    return rows;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const updateUserInfo = async (email, username, id) => {
+  const connection = await mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    database: "jwt",
+    port: 3309,
+    Promise: bluebird,
+  });
+
+  try {
+    const [rows, fields] = await connection.execute(
+      "UPDATE users SET email = ?, username = ? WHERE id = ?",
+      [email, username, id]
+    );
+    return rows;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   createUser,
   getListUser,
   deleteUser,
+  getUserById,
+  updateUserInfo,
 };

@@ -18,6 +18,8 @@ const initWebRoutes = (app) => {
   // });
   router.post("/user/create", homeController.handleCreate); //
   router.post("/delete-user/:id", homeController.handleDelete);
+  router.get("/update-user/:id", homeController.getUpdatePage);
+  router.post("/user/update", homeController.handleUpdate);
   return app.use("/", router); //app.use để đăng ký router đó với ứng dụng Express.
 };
 
