@@ -4,6 +4,7 @@ import configViewEngine from "./config/viewEngine."; //bản chất của nhóm 
 import initWebRoutes from "./routes/web";
 require("dotenv").config(); //khai báo thư viện dotenv
 import bodyParser from "body-parser";
+// import connection from "./config/connectDB";
 
 //file server.js là entry point
 //Chúng ta cần khai báo express. khi chạy npm start,nó sẽ khởi tạo express (khung website)
@@ -16,6 +17,9 @@ configViewEngine(app);
 //config thư viện body-parser. Đây là 1 Middleware (data chuyển sang dạng JSON ,lấy được param , body,query > Giản lược hóa)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+//test connection DB
+// connection();
 
 //init web routes (khai báo url để user truy cập)
 initWebRoutes(app);
