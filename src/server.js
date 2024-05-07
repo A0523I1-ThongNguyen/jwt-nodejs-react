@@ -1,6 +1,6 @@
 import express from "express"; //khai báo biến express từ thư viện Express để gọi thư viện và khởi tạo đối tượng Express trong ứng dụng của mình. ( import module Express vào file hiện tại và gán nó cho biến express.)
 // tách ra xử lí rồi import vào
-import configViewEngine from "./configs/viewEngine."; //bản chất của nhóm code chỉ thực hiện 1 chức năng nên ta tách file ra
+import configViewEngine from "./config/viewEngine."; //bản chất của nhóm code chỉ thực hiện 1 chức năng nên ta tách file ra
 import initWebRoutes from "./routes/web";
 require("dotenv").config(); //khai báo thư viện dotenv
 import bodyParser from "body-parser";
