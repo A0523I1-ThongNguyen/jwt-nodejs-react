@@ -29,7 +29,7 @@ const createUser = async (email, password, username) => {
 
   try {
     const [rows, fields] = await connection.execute(
-      "INSERT INTO users (email, password, username) VALUES (?, ?, ?)",
+      "INSERT INTO user (email, password, username) VALUES (?, ?, ?)",
       [email, hashPass, username]
     );
   } catch (error) {
@@ -37,7 +37,7 @@ const createUser = async (email, password, username) => {
   }
 
   // connection.query(
-  //   " INSERT INTO users (email, password, username) VALUES (?, ?, ?)",
+  //   " INSERT INTO user (email, password, username) VALUES (?, ?, ?)",
   //   [email, hashPass, username],
   //   function (err, results, fields) {
   //     if (err) {
@@ -61,13 +61,13 @@ const getListUser = async () => {
   });
 
   try {
-    const [rows, fields] = await connection.execute("select * from users");
+    const [rows, fields] = await connection.execute("select * from user");
     // console.log("check rows: ", rows)
     return rows;
   } catch (error) {
     console.log("Loi:", error);
   }
-  // connection.query("select * from users", function (err, results, fields) {
+  // connection.query("select * from user", function (err, results, fields) {
   //   if (err) {
   //     console.log("Lỗi :", err);
   //   } else {
@@ -87,7 +87,7 @@ const deleteUser = async (id) => {
   //DELETE FROM table_name WHERE condition;
   try {
     const [rows, fields] = await connection.execute(
-      "DELETE FROM users WHERE id =?",
+      "DELETE FROM user WHERE id =?",
       [id]
     );
     // console.log("check rows: ", rows)
@@ -109,7 +109,7 @@ const getUserById = async (id) => {
   try {
     //rows là một array, view chỉ làm việc với object thuần túy nên ta sẽ lấy phần tử đầu tiên trong array của rows
     const [rows, fields] = await connection.execute(
-      "select * from users where id = ?",
+      "select * from user where id = ?",
       [id]
     );
     console.log("check row ", rows);
@@ -130,7 +130,7 @@ const updateUserInfo = async (email, username, id) => {
 
   try {
     const [rows, fields] = await connection.execute(
-      "UPDATE users SET email = ?, username = ? WHERE id = ?",
+      "UPDATE user SET email = ?, username = ? WHERE id = ?",
       [email, username, id]
     );
     return rows;
