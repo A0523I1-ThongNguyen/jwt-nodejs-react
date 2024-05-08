@@ -1,9 +1,10 @@
 import bcrypt from "bcryptjs";
-const salt = bcrypt.genSaltSync(10);
-
 import bluebird from "bluebird";
 // Get the client
 import mysql from "mysql2/promise";
+import db from '../models/index';
+
+const salt = bcrypt.genSaltSync(10);
 // Create the connection to database
 const connection = mysql.createConnection({
   host: "localhost",
@@ -19,19 +20,24 @@ const hashUserPassword = (userPassword) => {
 
 const createUser = async (email, password, username) => {
   let hashPass = hashUserPassword(password);
-  const connection = await mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    database: "jwt",
-    port: 3309,
-    Promise: bluebird,
-  });
+  // const connection = await mysql.createConnection({
+  //   host: "localhost",
+  //   user: "root",
+  //   database: "jwt",
+  //   port: 3309,
+  //   Promise: bluebird,
+  // });
 
   try {
-    const [rows, fields] = await connection.execute(
-      "INSERT INTO user (email, password, username) VALUES (?, ?, ?)",
-      [email, hashPass, username]
-    );
+   await db.User.create({ //db[model.name] = model; (file index) Tham chiếu tới file user.js để thao tác với DB
+      username : username,
+      email: email,
+      password : hashPass
+    })
+    // const [rows, fields] = await connection.execute(
+    //   "INSERT INTO user (email, password, username) VALUES (?, ?, ?)",
+    //   [email, hashPass, username]
+    // );
   } catch (error) {
     console.log("check Error:", error);
   }

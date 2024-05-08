@@ -1,13 +1,14 @@
 'use strict';
-
-const fs = require('fs');
+require('dotenv').config();
+const fs = require('fs');//file stream
 const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../../config/config.json')[env];
+const env = process.env.NODE_ENV || 'development'; // moi truong
+const config = require(__dirname + '/../config/config.json')[env];// chay vao file config.json + development (dữ liệu của development trong file config.json)
 const db = {};
 
+// kết nối tới DB
 let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
@@ -15,6 +16,7 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
+//nạp tất cả Model đã khai báo , gọi model thông qua biến db , thông qua biến db để thao tác với model của sequelize
 fs
   .readdirSync(__dirname)
   .filter(file => {
