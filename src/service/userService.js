@@ -3,6 +3,8 @@ import bluebird from "bluebird";
 // Get the client
 import mysql from "mysql2/promise";
 import db from '../models/index';
+import user from "../models/user";
+import { where } from "sequelize/lib/sequelize";
 
 const salt = bcrypt.genSaltSync(10);
 // Create the connection to database
@@ -57,22 +59,25 @@ const createUser = async (email, password, username) => {
 };
 
 const getListUser = async () => {
-  let user = [];
-  const connection = await mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    database: "jwt",
-    port: 3309,
-    Promise: bluebird,
-  });
+  let  users = [];
+  users =  await db.User.findAll(); //Chỉ cần gọi đến DB để lấy kết quả
+  return users;
+  // let user = [];
+  // const connection = await mysql.createConnection({
+  //   host: "localhost",
+  //   user: "root",
+  //   database: "jwt",
+  //   port: 3309,
+  //   Promise: bluebird,
+  // });
 
-  try {
-    const [rows, fields] = await connection.execute("select * from user");
-    // console.log("check rows: ", rows)
-    return rows;
-  } catch (error) {
-    console.log("Loi:", error);
-  }
+  // try {
+  //   const [rows, fields] = await connection.execute("select * from user");
+  //   // console.log("check rows: ", rows)
+  //   return rows;
+  // } catch (error) {
+  //   console.log("Loi:", error);
+  // }
   // connection.query("select * from user", function (err, results, fields) {
   //   if (err) {
   //     console.log("Lỗi :", err);
@@ -82,67 +87,85 @@ const getListUser = async () => {
   // });
 };
 
-const deleteUser = async (id) => {
-  const connection = await mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    database: "jwt",
-    port: 3309,
-    Promise: bluebird,
+const deleteUser = async (userID) => {
+  await db.User.destroy({
+    where: {id: userID}
   });
-  //DELETE FROM table_name WHERE condition;
-  try {
-    const [rows, fields] = await connection.execute(
-      "DELETE FROM user WHERE id =?",
-      [id]
-    );
-    // console.log("check rows: ", rows)
-    return rows;
-  } catch (error) {
-    console.log("Loi:", error);
-  }
+  // const connection = await mysql.createConnection({
+  //   host: "localhost",
+  //   user: "root",
+  //   database: "jwt",
+  //   port: 3309,
+  //   Promise: bluebird,
+  // });
+  // //DELETE FROM table_name WHERE condition;
+  // try {
+  //   const [rows, fields] = await connection.execute(
+  //     "DELETE FROM user WHERE id =?",
+  //     [id]
+  //   );
+  //   // console.log("check rows: ", rows)
+  //   return rows;
+  // } catch (error) {
+  //   console.log("Loi:", error);
+  // }
 };
 
-const getUserById = async (id) => {
-  const connection = await mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    database: "jwt",
-    port: 3309,
-    Promise: bluebird,
-  });
+const getUserById = async (userID) => {
+  let user = {};
+  user = await db.User.findOne(
+    {
+      where: {id: userID},
+      // raw: true, // nếu thêm tham số này thì ngay lập tức user sẽ là Obj JS , khi k có tham số này thì user là 1 Sequelize Object => Có nhiều thông tin hơn  
+    }
+  )
+  return user.get({ plain: true })// convert Sequeleze model thành Object JavaScript
+  console.log("check userifindone :" , user , "id ne" ,userID)
+  // const connection = await mysql.createConnection({
+  //   host: "localhost",
+  //   user: "root",
+  //   database: "jwt",
+  //   port: 3309,
+  //   Promise: bluebird,
+  // });
 
-  try {
-    //rows là một array, view chỉ làm việc với object thuần túy nên ta sẽ lấy phần tử đầu tiên trong array của rows
-    const [rows, fields] = await connection.execute(
-      "select * from user where id = ?",
-      [id]
-    );
-    console.log("check row ", rows);
-    return rows;
-  } catch (error) {
-    console.log(error);
-  }
+  // try {
+  //   //rows là một array, view chỉ làm việc với object thuần túy nên ta sẽ lấy phần tử đầu tiên trong array của rows
+  //   const [rows, fields] = await connection.execute(
+  //     "select * from user where id = ?",
+  //     [id]
+  //   );
+  //   console.log("check row ", rows);
+  //   return rows;
+  // } catch (error) {
+  //   console.log(error);
+  // }
 };
 
 const updateUserInfo = async (email, username, id) => {
-  const connection = await mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    database: "jwt",
-    port: 3309,
-    Promise: bluebird,
-  });
+  await db.User.update(
+    { email: email,username :username },// các trường muốn update
+    {
+      where: {  id: id} // điều kiện update
+    },
+  );
+  // const connection = await mysql.createConnection({
+  //   host: "localhost",
+  //   user: "root",
+  //   database: "jwt",
+  //   port: 3309,
+  //   Promise: bluebird,
+  // });
 
-  try {
-    const [rows, fields] = await connection.execute(
-      "UPDATE user SET email = ?, username = ? WHERE id = ?",
-      [email, username, id]
-    );
-    return rows;
-  } catch (error) {
-    console.log(error);
-  }
+  // try {
+  //   const [rows, fields] = await connection.execute(
+  //     "UPDATE user SET email = ?, username = ? WHERE id = ?",
+  //     [email, username, id]
+  //   );
+  //   return rows;
+  // } catch (error) {
+  //   console.log(error);
+  // }
 };
 
 module.exports = {

@@ -4,9 +4,9 @@ const fs = require('fs');//file stream
 const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development'; // moi truong
+const env = process.env.NODE_ENV || 'development'; // run at môi trường development
 const config = require(__dirname + '/../config/config.json')[env];// chay vao file config.json + development (dữ liệu của development trong file config.json)
-const db = {};
+const db = {}; //biến db đại diện cho một đối tượng quản lý các model và cung cấp các phương thức để thao tác với cơ sở dữ liệu thông qua ORM của Sequelize.
 
 // kết nối tới DB
 let sequelize;
