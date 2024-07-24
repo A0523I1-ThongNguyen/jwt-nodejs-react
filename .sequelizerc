@@ -1,8 +1,10 @@
-const path = require('path');
+//file config - hướng dẫn thử viện cần phải làm gì
 
+const path = require("path");
+// định danh thư mục cần tạo
 module.exports = {
-  'config': path.resolve('./src/config', 'config.json'),
-  'migrations-path': path.resolve('./src/', 'migrations'),
-  'models-path': path.resolve('./src/', 'models'),
-  'seeders-path': path.resolve('./src/', 'seeders')
-}
+  config: path.resolve("./src/config", "config.json"),
+  "migrations-path": path.resolve("./src/", "migrations"),
+  "models-path": path.resolve("./src/", "models"),
+  "seeders-path": path.resolve("./src/", "seeders"),
+};

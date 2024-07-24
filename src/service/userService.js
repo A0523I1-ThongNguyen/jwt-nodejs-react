@@ -2,9 +2,10 @@ import bcrypt from "bcryptjs";
 import bluebird from "bluebird";
 // Get the client
 import mysql from "mysql2/promise";
-import db from '../models/index';
+import db from "../models/index";
 import user from "../models/user";
 import { where } from "sequelize/lib/sequelize";
+import { raw } from "body-parser";
 
 const salt = bcrypt.genSaltSync(10);
 // Create the connection to database
@@ -31,11 +32,12 @@ const createUser = async (email, password, username) => {
   // });
 
   try {
-   await db.User.create({ //db[model.name] = model; (file index) Tham chiếu tới file user.js để thao tác với DB
-      username : username,
+    await db.User.create({
+      //db[model.name] = model; (file index) Tham chiếu tới file user.js để thao tác với DB
+      username: username,
       email: email,
-      password : hashPass
-    })
+      password: hashPass,
+    });
     // const [rows, fields] = await connection.execute(
     //   "INSERT INTO user (email, password, username) VALUES (?, ?, ?)",
     //   [email, hashPass, username]
@@ -59,8 +61,20 @@ const createUser = async (email, password, username) => {
 };
 
 const getListUser = async () => {
-  let  users = [];
-  users =  await db.User.findAll(); //Chỉ cần gọi đến DB để lấy kết quả
+  //test relationships
+
+  let newUser = await db.User.findOne({
+    where: { id: 2 },
+    include: db.Group, // = join table query sql
+    // include: { model: db.Group },
+    raw: true, // trả ra 1 object JS
+    nest: true, // gộp trường có liên quan vào object
+  });
+
+  console.log("check new User:  ", newUser);
+
+  let users = [];
+  users = await db.User.findAll(); //Chỉ cần gọi đến DB để lấy kết quả
   return users;
   // let user = [];
   // const connection = await mysql.createConnection({
@@ -89,7 +103,7 @@ const getListUser = async () => {
 
 const deleteUser = async (userID) => {
   await db.User.destroy({
-    where: {id: userID}
+    where: { id: userID },
   });
   // const connection = await mysql.createConnection({
   //   host: "localhost",
@@ -113,14 +127,12 @@ const deleteUser = async (userID) => {
 
 const getUserById = async (userID) => {
   let user = {};
-  user = await db.User.findOne(
-    {
-      where: {id: userID},
-      // raw: true, // nếu thêm tham số này thì ngay lập tức user sẽ là Obj JS , khi k có tham số này thì user là 1 Sequelize Object => Có nhiều thông tin hơn  
-    }
-  )
-  return user.get({ plain: true })// convert Sequeleze model thành Object JavaScript
-  console.log("check userifindone :" , user , "id ne" ,userID)
+  user = await db.User.findOne({
+    where: { id: userID },
+    // raw: true, // nếu thêm tham số này thì ngay lập tức user sẽ là Obj JS , khi k có tham số này thì user là 1 Sequelize Object => Có nhiều thông tin hơn
+  });
+  return user.get({ plain: true }); // convert Sequeleze model thành Object JavaScript
+  console.log("check userifindone :", user, "id ne", userID);
   // const connection = await mysql.createConnection({
   //   host: "localhost",
   //   user: "root",
@@ -144,10 +156,10 @@ const getUserById = async (userID) => {
 
 const updateUserInfo = async (email, username, id) => {
   await db.User.update(
-    { email: email,username :username },// các trường muốn update
+    { email: email, username: username }, // các trường muốn update
     {
-      where: {  id: id} // điều kiện update
-    },
+      where: { id: id }, // điều kiện update
+    }
   );
   // const connection = await mysql.createConnection({
   //   host: "localhost",

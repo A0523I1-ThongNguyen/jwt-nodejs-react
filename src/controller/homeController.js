@@ -31,18 +31,16 @@ const getUpdatePage = async (req, res) => {
   let userData = {};
   let id = req.params.id; // gán param trên url cho biến id
   let user = await userService.getUserById(id); // Kết quả trả về ở file service (rows) là một mảng gán cho mảng user , mà  // hứng kết quả từ truy vấn gán vào biến user
-  userData = user;// dùng sequelize có thể trả ra 1 phần tử, k nhất thiết là 1 array
+  userData = user; // dùng sequelize có thể trả ra 1 phần tử, k nhất thiết là 1 array
 
- 
-  console.log("check useDate" ,userData)
-   // let userData = {};
+  console.log("check useDate", userData);
+  return res.render("update.ejs", { userData });
+  // let userData = {};
   // dùng mysql chỉ biết trả về 1 array
   //check đk .length vì khi trả ra mảng rỗng mà ta dùng user lấy phần tử 0 thì bị lỗi
   // if (user && user.length > 0) {
   //   userData = user[0]; // gắn phần tử đầu tiên cho biến object rỗng userData
   // }
-  console.log("check user ", userData);
-  return res.render("update.ejs", { userData });
 };
 
 const handleUpdate = async (req, res) => {
