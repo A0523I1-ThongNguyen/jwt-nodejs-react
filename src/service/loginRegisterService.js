@@ -54,7 +54,6 @@ const registerNewUser = async (rawUserData, res) => {
         DT: "", //data
       };
     }
-    cxzxx;
     //check email/phone are exist
     let isEmailExist = await checkEmailExist(rawUserData.email);
     if (isEmailExist === true) {
