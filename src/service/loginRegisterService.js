@@ -148,4 +148,7 @@ const loginUser = async (rawData) => {
 module.exports = {
   registerNewUser,
   loginUser,
+  hashUserPassword,
+  checkEmailExist,
+  checkPhoneExist,
 };

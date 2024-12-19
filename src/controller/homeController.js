@@ -1,7 +1,7 @@
 import userService from "../service/userService";
 
 const handleHello = (req, res) => {
-  const name = "Dieu";
+  const name = "Hello";
   return res.render("home.ejs", { name });
 };
 

@@ -1,6 +1,6 @@
 //file config - hướng dẫn thử viện cần phải làm gì
-
 const path = require("path");
+
 // định danh thư mục cần tạo
 module.exports = {
   config: path.resolve("./src/config", "config.json"),
