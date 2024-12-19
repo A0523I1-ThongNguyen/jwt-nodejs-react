@@ -12,7 +12,7 @@ const router = express.Router();
  */
 
 const initApiRoutes = (app) => {
-  router.get("/getlist", apiController.apime);
+  // router.get("/getlist", apiController.apime);
   router.post("/register", (req, res) => {
     apiController.hanlderRegister(req, res);
   });

@@ -1,11 +1,11 @@
 import loginRegisterService from "../service/loginRegisterService";
 
-const apime = (req, res) => {
-  return res.status(200).json({
-    message: "ok nhe",
-    data: "list works",
-  });
-};
+// const apime = (req, res) => {
+//   return res.status(200).json({
+//     message: "ok nhe",
+//     data: "list works",
+//   });
+// };
 
 const hanlderRegister = async (req, res) => {
   try {
@@ -49,7 +49,7 @@ const handleLogin = async (req, res) => {
 };
 
 module.exports = {
-  apime,
+  // apime,
   hanlderRegister,
   handleLogin,
 };
