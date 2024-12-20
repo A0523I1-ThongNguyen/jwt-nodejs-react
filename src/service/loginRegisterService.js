@@ -41,12 +41,12 @@ const checkPassword = (inputPassword, hashPassword) => {
   return bcrypt.compareSync(inputPassword, hashPassword); // true or false
 };
 
-// Method Create
+// Method Register
 const registerNewUser = async (rawUserData, res) => {
   //rawUserData = req.body from file apiController
   let flag = false;
   try {
-    // check case value k dc truyền lên
+    // Check case where the value is not provided
     if (!rawUserData.email || !rawUserData.phone || !rawUserData.password) {
       return {
         EM: "thiếu giá trị tham số truyền lên cho server", //error massage
@@ -71,7 +71,7 @@ const registerNewUser = async (rawUserData, res) => {
       };
     }
 
-    // check độ dài password
+    // check length password
     if (rawUserData.password && rawUserData.password.length <= 3) {
       return {
         EM: "Độ dài Password tối thiểu là 3 kí tự",
@@ -122,13 +122,12 @@ const loginUser = async (rawData) => {
       );
       if (isCorrectPassword === true) {
         return {
-          EM: "Ok!",
+          EM: "Login successfully!",
           EC: 0,
           DT: "",
         };
       }
     }
-    console.log(">>Case : Not found User or Wrong Password");
     return {
       EM: "Your email/phone number or password is wrong!",
       EC: -1,
@@ -139,8 +138,8 @@ const loginUser = async (rawData) => {
   } catch (e) {
     console.log(e);
     return {
-      EM: "something wrongs in Service", //error massage
-      EC: -1, //error code
+      EM: "something wrongs in Service",
+      EC: -1,
     };
   }
 };

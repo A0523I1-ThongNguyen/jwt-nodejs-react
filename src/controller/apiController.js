@@ -1,12 +1,5 @@
 import loginRegisterService from "../service/loginRegisterService";
 
-// const apime = (req, res) => {
-//   return res.status(200).json({
-//     message: "ok nhe",
-//     data: "list works",
-//   });
-// };
-
 const hanlderRegister = async (req, res) => {
   try {
     //create user : call service
@@ -14,15 +7,15 @@ const hanlderRegister = async (req, res) => {
     console.log("cc : ", data.EC);
 
     return res.status(200).json({
-      EM: data.EM, //error massage
-      EC: data.EC, //error code
-      DT: "", //data
+      EM: data.EM,
+      EC: data.EC,
+      DT: "",
     });
   } catch (e) {
     return res.status(500).json({
-      EM: "error from server", //error massage
-      EC: "-1", //error code
-      DT: "", //data
+      EM: "error from server",
+      EC: "-1",
+      DT: "",
     });
   }
 };
@@ -39,9 +32,9 @@ const handleLogin = async (req, res) => {
   } catch (e) {
     console.log(e);
     return res.status(500).json({
-      EM: "error from server", //error massage
-      EC: "-1", //error code
-      DT: "", //data
+      EM: "error from server",
+      EC: "-1",
+      DT: "",
     });
   }
 
@@ -49,7 +42,6 @@ const handleLogin = async (req, res) => {
 };
 
 module.exports = {
-  // apime,
   hanlderRegister,
   handleLogin,
 };

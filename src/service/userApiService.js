@@ -8,6 +8,16 @@ import {
   hashUserPassword,
 } from "./loginRegisterService";
 
+const checkIdExist = async (id) => {
+  let idUser = await db.User.findOne({
+    where: { id: id },
+  });
+  if (idUser) {
+    return true;
+  }
+  return false;
+};
+
 const getAllUser = async () => {
   try {
     let usersData = await db.User.findAll({
@@ -24,7 +34,7 @@ const getAllUser = async () => {
     } else {
       return {
         EM: "no data",
-        EC: 0,
+        EC: -1,
         DT: [],
       };
     }
@@ -40,10 +50,19 @@ const getAllUser = async () => {
 
 const createUser = async (data) => {
   try {
-    if (!data.email || !data.phone) {
+    let isIdExist = await checkIdExist(data.id);
+    if (isIdExist) {
       return {
-        EM: "Email and phone are required",
-        EC: 1,
+        EM: "Duplicate entry id: " + data.id,
+        EC: -1,
+        DT: "",
+      };
+    }
+
+    if (!data.email || !data.phone || !data.password) {
+      return {
+        EM: "Email and phone and password are required",
+        EC: -1,
         DT: [],
       };
     }
@@ -53,7 +72,7 @@ const createUser = async (data) => {
     if (!emailRegex.test(data.email)) {
       return {
         EM: "Invalid email format",
-        EC: 2,
+        EC: -1,
         DT: [],
       };
     }
@@ -68,6 +87,15 @@ const createUser = async (data) => {
       };
     }
 
+    const phoneRegex = /^0\d{9,10}$/;
+    if (!phoneRegex.test(data.phone)) {
+      return {
+        EM: "Invalid phone format",
+        EC: -1,
+        DT: "",
+      };
+    }
+
     let isPhoneExist = await checkPhoneExist(data.phone);
     if (isPhoneExist === true) {
       return {
@@ -79,6 +107,11 @@ const createUser = async (data) => {
 
     //hash password
     const hashPassword = hashUserPassword(data.password);
+
+    if (true) {
+      // This condition can be adjusted to simulate an error
+      throw new Error("Database connection failed"); // Triggers a 500 server error
+    }
 
     // const hashUserPassword = (userPassword) => {
     //   let proHashPass = bcrypt.hashSync(userPassword, salt);
@@ -104,17 +137,73 @@ const createUser = async (data) => {
 
 const updateUser = async (data) => {
   try {
-    let user = await db.db.User.findOne({
+    if (!data.email || !data.phone || !data.password) {
+      return {
+        EM: "Email and phone and password are required",
+        EC: -1,
+        DT: [],
+      };
+    }
+
+    // Check valid of the email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data.email)) {
+      return {
+        EM: "Invalid email format",
+        EC: -1,
+        DT: "",
+      };
+    }
+
+    const phoneRegex = /^0\d{9,10}$/;
+    if (!phoneRegex.test(data.phone)) {
+      return {
+        EM: "Invalid phone format",
+        EC: -1,
+        DT: "",
+      };
+    }
+
+    //hash password
+    const hashPassword = hashUserPassword(data.password);
+
+    let user = await db.User.findOne({
       where: { id: data.id },
     });
+
     if (user) {
-      //update
-      user.save({});
+      await user.update(
+        {
+          username: data.username,
+          phone: data.phone,
+          email: data.email,
+          groupId: data.groupId,
+          password: hashPassword,
+        },
+        {
+          where: { id: data.id },
+        }
+      );
+      return {
+        EM: "Update successfully",
+        EC: 0,
+        DT: "",
+      };
     } else {
-      //not found
+      return {
+        EM: "User not found",
+        EC: 1,
+        DT: "",
+      };
     }
   } catch (e) {
     console.log(e);
+
+    return {
+      EM: "Wrongs with service",
+      EC: -1,
+      DT: "",
+    };
   }
 };
 
@@ -128,14 +217,14 @@ const delUser = async (id) => {
       await user.destroy();
 
       return {
-        EM: "Delete successfully",
+        EM: "Delete successfully with id: " + id,
         EC: 0,
         DT: [],
       };
     } else {
       return {
         EM: "User not exist",
-        EC: -1,
+        EC: 1,
         DT: [],
       };
     }
@@ -143,7 +232,7 @@ const delUser = async (id) => {
     console.log(e);
     return {
       EM: "error from service",
-      EC: 1,
+      EC: -1,
       DT: [],
     };
   }

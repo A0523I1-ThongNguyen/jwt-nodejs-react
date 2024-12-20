@@ -21,7 +21,7 @@ initApiRoutes(app);
 
 app.listen(PORT, () => {
   console.log(
-    ">>Callback function này sẽ được chạy sau khi app chúng ta chạy thành công . port = " +
+    ">>The callback function will be executed after our app runs successfully . port = " +
       PORT
   );
 });

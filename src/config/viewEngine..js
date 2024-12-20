@@ -1,14 +1,13 @@
 import express from "express";
 
 /**
- * hàm configViewEngine thiết lập cơ chế xem là EJS, cho phép sử dụng tệp tĩnh từ thư mục ./src/public và
- * tìm kiếm các tệp mẫu trong thư mục ./src/views.
+// The configViewEngine function sets the view engine to EJS, allows serving static files from ./src/public, and searches for templates in ./src/views.
  * @param {*} app - express app
  */
 const configViewEngine = (app) => {
-  app.use(express.static("./src/public")); //app sẽ cho phép truy cập file image , css, Js ở /src/public
-  app.set("view engine", "ejs"); // định nghĩa view Engine. sử dụng công nghệ EJS để viết code HTML đối với Nodejs
-  app.set("views", "./src/views"); //Định nghĩa nơi lưu trữ file view Engine. File view Engine sẽ lưu trữ bên trong src/views
+  app.use(express.static("./src/public")); // The app will allow access to image, CSS, and JS files in /src/public.
+  app.set("view engine", "ejs"); // Define the view engine. Use EJS technology to write HTML code for Node.js.
+  app.set("views", "./src/views"); // Define the location for storing the view engine files. The view engine files will be stored inside src/views.
 };
 
 export default configViewEngine; //export tham chiếu configViewEngine

@@ -1,6 +1,5 @@
 import express from "express";
-import homeController from "../controller/homeController"; //import tới file homeController
-// import apiController from "../controller/apiController";
+import homeController from "../controller/homeController"; //import file homeController
 
 const router = express.Router();
 
@@ -9,20 +8,20 @@ const router = express.Router();
  * @param {*} app - express app
  */
 
-//server/express sẽ biết website có bao nhiêu router + cần làm gì khi vào 1 link user yêu cầu
+// The server/express will know how many routers the website has and what to do when a user requests a specific link.
 const initWebRoutes = (app) => {
   //path , handle
-  router.get("/", homeController.handleHello); //tuyến đường Định ghĩa bằng router.get
+  router.get("/", homeController.handleHello); // Route defined using router.get
   router.get("/user", homeController.handleUser);
   // router.post("/users/create", (req, res) => {
   //   homeController.handleCreate(req, res);
   // });
-  router.post("/user/create", homeController.handleCreate); //
+  router.post("/user/create", homeController.handleCreate);
   router.post("/delete-user/:id", homeController.handleDelete);
   router.get("/update-user/:id", homeController.getUpdatePage);
   router.post("/user/update", homeController.handleUpdate);
 
-  return app.use("/", router); //app.use để đăng ký router đó với ứng dụng Express.
+  return app.use("/", router); // app.use is used to register that router with the Express application.
 };
 
 export default initWebRoutes;
