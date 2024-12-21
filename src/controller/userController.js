@@ -9,11 +9,17 @@ const read = async (req, res) => {
         EC: data.EC, //error code
         DT: data.DT, //data
       });
-    } else {
+    } else if (data.EC === 1) {
       return res.status(404).json({
-        EM: data.EM, //error massage
-        EC: data.EC, //error code
-        DT: data.DT, //data
+        EM: data.EM,
+        EC: data.EC,
+        DT: data.DT,
+      });
+    } else {
+      return res.status(500).json({
+        EM: data.EM,
+        EC: data.EC,
+        DT: data.DT,
       });
     }
   } catch (e) {
@@ -35,7 +41,7 @@ const create = async (req, res) => {
         EC: data.EC,
         DT: data.DT,
       });
-    } else if (data.EC === -1) {
+    } else if (data.EC === 2) {
       return res.status(400).json({
         EM: data.EM,
         EC: data.EC,
@@ -61,15 +67,35 @@ const create = async (req, res) => {
 const update = async (req, res) => {
   try {
     let data = await userApiService.updateUser(req.body);
-    return res.status(200).json({
-      EM: data.EM,
-      EC: data.EC,
-      DT: data.DT,
-    });
+    if (data.EC === 0) {
+      return res.status(200).json({
+        EM: data.EM,
+        EC: data.EC,
+        DT: data.DT,
+      });
+    } else if (data.EC === 2) {
+      return res.status(400).json({
+        EM: data.EM,
+        EC: data.EC,
+        DT: data.DT,
+      });
+    } else if (data.EC === 1) {
+      return res.status(404).json({
+        EM: data.EM,
+        EC: data.EC,
+        DT: data.DT,
+      });
+    } else {
+      return res.status(500).json({
+        EM: data.EM,
+        EC: data.EC,
+        DT: data.DT,
+      });
+    }
   } catch (e) {
     console.log(e);
     return res.status(500).json({
-      EM: "error from controller",
+      EM: "error from server (controller)",
       EC: "-1",
       DT: "",
     });
@@ -79,11 +105,19 @@ const update = async (req, res) => {
 const del = async (req, res) => {
   try {
     let data = await userApiService.delUser(req.params.id);
-    return res.status(200).json({
-      EM: data.EM,
-      EC: data.EC,
-      DT: data.DT,
-    });
+    if (data.EC === 0) {
+      return res.status(200).json({
+        EM: data.EM,
+        EC: data.EC,
+        DT: data.DT,
+      });
+    } else if (data.EC === 1) {
+      return res.status(404).json({
+        EM: data.EM,
+        EC: data.EC,
+        DT: data.DT,
+      });
+    }
   } catch (e) {
     console.log(e);
     return res.status(500).json({

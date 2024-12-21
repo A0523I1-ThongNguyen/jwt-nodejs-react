@@ -24,6 +24,7 @@ const getAllUser = async () => {
       attributes: ["id", "username", "email"],
       include: { model: db.Group, attributes: ["name", "description"] },
     });
+
     if (usersData) {
       console.log("userdata: ", usersData);
       return {
@@ -33,8 +34,8 @@ const getAllUser = async () => {
       };
     } else {
       return {
-        EM: "no data",
-        EC: -1,
+        EM: "not found data",
+        EC: 1,
         DT: [],
       };
     }
@@ -42,7 +43,7 @@ const getAllUser = async () => {
     console.log(e);
     return {
       EM: "something wrongs with services",
-      EC: 1,
+      EC: -1,
       DT: [],
     };
   }
@@ -54,7 +55,7 @@ const createUser = async (data) => {
     if (isIdExist) {
       return {
         EM: "Duplicate entry id: " + data.id,
-        EC: -1,
+        EC: 2,
         DT: "",
       };
     }
@@ -62,7 +63,7 @@ const createUser = async (data) => {
     if (!data.email || !data.phone || !data.password) {
       return {
         EM: "Email and phone and password are required",
-        EC: -1,
+        EC: 2,
         DT: [],
       };
     }
@@ -72,7 +73,7 @@ const createUser = async (data) => {
     if (!emailRegex.test(data.email)) {
       return {
         EM: "Invalid email format",
-        EC: -1,
+        EC: 2,
         DT: [],
       };
     }
@@ -82,7 +83,7 @@ const createUser = async (data) => {
     if (isEmailExist === true) {
       return {
         EM: "Email is already exist",
-        EC: -1,
+        EC: 2,
         DT: "email",
       };
     }
@@ -91,7 +92,7 @@ const createUser = async (data) => {
     if (!phoneRegex.test(data.phone)) {
       return {
         EM: "Invalid phone format",
-        EC: -1,
+        EC: 2,
         DT: "",
       };
     }
@@ -100,7 +101,7 @@ const createUser = async (data) => {
     if (isPhoneExist === true) {
       return {
         EM: "Phone is already exist",
-        EC: -1,
+        EC: 2,
         DT: "phone",
       };
     }
@@ -108,16 +109,10 @@ const createUser = async (data) => {
     //hash password
     const hashPassword = hashUserPassword(data.password);
 
-    if (true) {
-      // This condition can be adjusted to simulate an error
-      throw new Error("Database connection failed"); // Triggers a 500 server error
-    }
-
     // const hashUserPassword = (userPassword) => {
     //   let proHashPass = bcrypt.hashSync(userPassword, salt);
     //   return proHashPass;
     // };
-
     await db.User.create({ ...data, password: hashPassword });
 
     return {
@@ -129,7 +124,7 @@ const createUser = async (data) => {
     console.log(e);
     return {
       EM: "error from service",
-      EC: 1,
+      EC: -1,
       DT: [],
     };
   }
@@ -140,7 +135,7 @@ const updateUser = async (data) => {
     if (!data.email || !data.phone || !data.password) {
       return {
         EM: "Email and phone and password are required",
-        EC: -1,
+        EC: 2,
         DT: [],
       };
     }
@@ -150,7 +145,7 @@ const updateUser = async (data) => {
     if (!emailRegex.test(data.email)) {
       return {
         EM: "Invalid email format",
-        EC: -1,
+        EC: 2,
         DT: "",
       };
     }
@@ -159,7 +154,7 @@ const updateUser = async (data) => {
     if (!phoneRegex.test(data.phone)) {
       return {
         EM: "Invalid phone format",
-        EC: -1,
+        EC: 2,
         DT: "",
       };
     }
@@ -198,9 +193,8 @@ const updateUser = async (data) => {
     }
   } catch (e) {
     console.log(e);
-
     return {
-      EM: "Wrongs with service",
+      EM: "Error with service",
       EC: -1,
       DT: "",
     };
@@ -223,7 +217,7 @@ const delUser = async (id) => {
       };
     } else {
       return {
-        EM: "User not exist",
+        EM: "Id user not found",
         EC: 1,
         DT: [],
       };

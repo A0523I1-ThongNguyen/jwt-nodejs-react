@@ -90,7 +90,6 @@ const registerNewUser = async (rawUserData, res) => {
       username: rawUserData.userName,
       password: password,
     });
-
     return {
       EM: "The User Created Successfully!",
       EC: 0,
@@ -104,6 +103,7 @@ const registerNewUser = async (rawUserData, res) => {
   }
 };
 
+// Method Login
 const loginUser = async (rawData) => {
   try {
     console.log(">>Input user email/phone number: ", rawData.valueLogin);
@@ -133,8 +133,6 @@ const loginUser = async (rawData) => {
       EC: -1,
       DT: "",
     };
-    // console.log("check user JS: ", user.get({ plain: true }));
-    // console.log("check user sequelize  : ", user.dataValues);
   } catch (e) {
     console.log(e);
     return {

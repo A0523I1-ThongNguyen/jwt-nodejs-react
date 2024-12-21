@@ -8,7 +8,7 @@ const router = express.Router();
 
 /**
  *
- * @param {*} app - express app
+ * @param {*} app -  Get directly from file server
  */
 
 const initApiRoutes = (app) => {

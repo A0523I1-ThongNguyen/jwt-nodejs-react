@@ -1,15 +1,24 @@
 import db from "../models/index";
+import user from "../models/user";
 const getGroups = async () => {
   try {
     let data = await db.Group.findAll({
       order: [["id", "ASC"]],
     });
 
-    return {
-      EM: "get Group successfully",
-      EC: 0,
-      DT: data,
-    };
+    if (data) {
+      return {
+        EM: "get Group successfully",
+        EC: 0,
+        DT: data,
+      };
+    } else {
+      return {
+        EM: "not found data",
+        EC: 1,
+        DT: [],
+      };
+    }
   } catch (e) {
     console.log(e);
     return {
